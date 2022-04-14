@@ -20,19 +20,7 @@ jobs:
         dotnet-version: 6.0.x
         
     - name: Run dotnet format
-      id: format
-      run: dotnet format
-      
-    - name: Commit files
-      if: steps.format.outputs.has-changes == 'true'
-      uses: EndBug/add-and-commit@v4.1.0
-      with:
-          author_name: Github Actions
-          author_email: actions@github.com
-          message: Automated dotnet-format update
-          ref: ${{ github.head_ref }}
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet format --verify-no-changes
         
     - name: Restore dependencies
       run: dotnet restore
