@@ -19,16 +19,20 @@ jobs:
       with:
         dotnet-version: 6.0.x
         
-    - name: Add dotnet-format problem matcher
-      uses: xt0rted/dotnet-format-problem-matcher@v1
-
-    - name: Restore dotnet tools
-      uses: xt0rted/dotnet-tool-restore@v1
-
     - name: Run dotnet format
-      uses: xt0rted/dotnet-format@v1
+      id: format
+      run: dotnet format
+      
+    - name: Commit files
+      if: steps.format.outputs.has-changes == 'true'
+      uses: EndBug/add-and-commit@v4.1.0
       with:
-          only-changed-files: "true"
+          author_name: Github Actions
+          author_email: actions@github.com
+          message: Automated dotnet-format update
+          ref: ${{ github.head_ref }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Restore dependencies
       run: dotnet restore
