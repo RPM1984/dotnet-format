@@ -4,7 +4,7 @@
     {
         public int Foo()
         {
-            int x = 1;
+            var x = 1;
 
             if (1 == 1)
             {
